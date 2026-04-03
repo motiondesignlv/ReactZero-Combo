@@ -1,0 +1,36 @@
+/* ------------------------------------------------------------------ */
+/* Radio variant — pure CSS via ::before pseudo-element               */
+/* ------------------------------------------------------------------ */
+
+.rzero-combo-item[data-variant="radio"] {
+  gap: 8px;
+  justify-content: flex-start;
+}
+
+.rzero-combo-item[data-variant="radio"]::before {
+  content: '';
+  flex-shrink: 0;
+  width: var(--rzero-combo-radio-size, 16px);
+  height: var(--rzero-combo-radio-size, 16px);
+  border: 2px solid var(--rzero-combo-radio-border, #d1d5db);
+  border-radius: 50%;
+  background: var(--rzero-combo-radio-bg, #ffffff);
+  transition: background 150ms ease, border-color 150ms ease;
+}
+
+.rzero-combo-item[data-variant="radio"][data-selected]::before {
+  border-color: var(--rzero-combo-radio-checked-border, #3b82f6);
+  background: radial-gradient(
+    circle,
+    var(--rzero-combo-radio-checked-dot, #3b82f6) 35%,
+    transparent 36%
+  );
+}
+
+.rzero-combo-item[data-variant="radio"][data-highlighted]::before {
+  border-color: var(--rzero-combo-radio-hover-border, #9ca3af);
+}
+
+.rzero-combo-item[data-variant="radio"][data-selected][data-highlighted]::before {
+  border-color: var(--rzero-combo-radio-checked-border, #3b82f6);
+}

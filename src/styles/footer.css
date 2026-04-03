@@ -1,0 +1,73 @@
+/* Footer */
+.rzero-combo-footer {
+  border-top: var(--rzero-combo-footer-border-top, 1px solid #e5e7eb);
+  padding: var(--rzero-combo-footer-padding, 8px 12px);
+  font-size: var(--rzero-combo-input-font-size, 14px);
+  color: var(--rzero-combo-footer-color, #6b7280);
+}
+
+/* Footer actions layout */
+.rzero-combo-footer-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.rzero-combo-footer-actions-buttons {
+  display: flex;
+  gap: 6px;
+}
+
+.rzero-combo-footer-actions button {
+  padding: 4px 12px;
+  border: var(--rzero-combo-footer-action-border, 1px solid #d1d5db);
+  border-radius: var(--rzero-combo-footer-action-border-radius, 4px);
+  background: var(--rzero-combo-footer-action-bg, transparent);
+  color: var(--rzero-combo-footer-action-color, #374151);
+  font-size: var(--rzero-combo-footer-action-font-size, 13px);
+  cursor: pointer;
+  transition: background 150ms ease;
+}
+
+.rzero-combo-footer-actions button:hover {
+  background: var(--rzero-combo-footer-action-hover-bg, #f3f4f6);
+}
+
+.rzero-combo-footer-actions button[data-variant="primary"] {
+  background: var(--rzero-combo-footer-action-primary-bg, #3b82f6);
+  color: var(--rzero-combo-footer-action-primary-color, #ffffff);
+  border-color: var(--rzero-combo-footer-action-primary-bg, #3b82f6);
+}
+
+.rzero-combo-footer-actions button[data-variant="primary"]:hover {
+  background: var(--rzero-combo-footer-action-primary-hover-bg, #2563eb);
+}
+
+.rzero-combo-footer-actions button[data-variant="ghost"] {
+  border-color: transparent;
+  background: transparent;
+}
+
+.rzero-combo-footer-actions button[data-variant="ghost"]:hover {
+  background: var(--rzero-combo-footer-action-hover-bg, #f3f4f6);
+}
+
+.rzero-combo-footer-actions button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Footer note */
+.rzero-combo-footer-note {
+  font-size: var(--rzero-combo-footer-note-font-size, 12px);
+  color: var(--rzero-combo-footer-note-color, #9ca3af);
+}
+
+/* Separator between groups */
+.rzero-combo-separator {
+  height: 1px;
+  background: var(--rzero-combo-separator-color, #e5e7eb);
+  margin: 4px 0;
+  border: none;
+}

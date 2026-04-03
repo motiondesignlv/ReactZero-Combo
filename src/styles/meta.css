@@ -1,0 +1,30 @@
+/* ------------------------------------------------------------------ */
+/* Meta row: hint text, error text, selection count                   */
+/* ------------------------------------------------------------------ */
+
+.rzero-combo-meta {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: var(--rzero-combo-meta-margin-top, 4px);
+  font-size: var(--rzero-combo-meta-font-size, 12px);
+  line-height: 1.4;
+}
+
+.rzero-combo-hint {
+  color: var(--rzero-combo-hint-color, #6b7280);
+}
+
+.rzero-combo-error-text {
+  color: var(--rzero-combo-error-text-color, #dc2626);
+}
+
+.rzero-combo-selection-count {
+  color: var(--rzero-combo-selection-count-color, #9ca3af);
+  white-space: nowrap;
+  margin-left: auto;
+}
+.rzero-combo-selection-count[data-warning] {
+  color: var(--rzero-combo-selection-count-warning-color, #f59e0b);
+}

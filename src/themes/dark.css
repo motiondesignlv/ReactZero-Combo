@@ -1,0 +1,96 @@
+[data-rzero-theme="dark"] {
+  /* Input */
+  --rzero-combo-input-bg: #1f2937;
+  --rzero-combo-input-border: 1px solid #374151;
+  --rzero-combo-input-color: #f9fafb;
+  --rzero-combo-input-hover-border: #60a5fa;
+  --rzero-combo-input-focus-ring: 0 0 0 2px #60a5fa;
+
+  /* Label & hint */
+  --rzero-combo-label-color: #e2e8f0;
+  --rzero-combo-hint-color: #94a3b8;
+
+  /* Popover */
+  --rzero-combo-popover-bg: #1f2937;
+  --rzero-combo-popover-border: 1px solid #374151;
+  --rzero-combo-popover-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+
+  /* Items */
+  --rzero-combo-item-color: #e5e7eb;
+  --rzero-combo-item-hover-bg: #374151;
+  --rzero-combo-item-selected-bg: #1e3a5f;
+  --rzero-combo-item-selected-color: #93c5fd;
+  --rzero-combo-item-highlighted-bg: #1e3a5f;
+  --rzero-combo-item-description-color: #94a3b8;
+  --rzero-combo-item-meta-color: #64748b;
+
+  /* Group headers */
+  --rzero-combo-group-header-color: #94a3b8;
+  --rzero-combo-group-header-count-bg: #374151;
+  --rzero-combo-group-header-count-color: #94a3b8;
+
+  /* Icons */
+  --rzero-combo-icon-muted-color: #64748b;
+
+  /* Chips */
+  --rzero-combo-chip-bg: #312e81;
+  --rzero-combo-chip-color: #c7d2fe;
+  --rzero-combo-chip-remove-color: #94a3b8;
+  --rzero-combo-chip-remove-hover-color: #f1f5f9;
+  --rzero-combo-chip-remove-hover-bg: rgba(255, 255, 255, 0.1);
+
+  /* Error states */
+  --rzero-combo-error-border: #f87171;
+  --rzero-combo-error-color: #f87171;
+  --rzero-combo-error-text-color: #fca5a5;
+  --rzero-combo-error-focus-ring: 0 0 0 2px #f87171;
+
+  /* Selection count */
+  --rzero-combo-selection-count-color: #94a3b8;
+  --rzero-combo-selection-count-warning-color: #fbbf24;
+
+  /* Checkbox variant */
+  --rzero-combo-checkbox-border: #4b5563;
+  --rzero-combo-checkbox-bg: #374151;
+  --rzero-combo-checkbox-checked-bg: #60a5fa;
+  --rzero-combo-checkbox-checked-border: #60a5fa;
+  --rzero-combo-checkbox-hover-border: #94a3b8;
+
+  /* Radio variant */
+  --rzero-combo-radio-border: #4b5563;
+  --rzero-combo-radio-bg: #374151;
+  --rzero-combo-radio-checked-border: #60a5fa;
+  --rzero-combo-radio-checked-dot: #60a5fa;
+  --rzero-combo-radio-hover-border: #94a3b8;
+
+  /* Badges */
+  --rzero-combo-badge-bg: #374151;
+  --rzero-combo-badge-color: #d1d5db;
+
+  /* Footer */
+  --rzero-combo-footer-border-top: 1px solid #374151;
+  --rzero-combo-footer-color: #94a3b8;
+  --rzero-combo-footer-note-color: #64748b;
+  --rzero-combo-footer-action-border: 1px solid #4b5563;
+  --rzero-combo-footer-action-color: #e5e7eb;
+  --rzero-combo-footer-action-hover-bg: #374151;
+  --rzero-combo-footer-action-primary-bg: #60a5fa;
+  --rzero-combo-footer-action-primary-color: #111827;
+  --rzero-combo-footer-action-primary-hover-bg: #3b82f6;
+
+  /* Separator */
+  --rzero-combo-separator-color: #374151;
+
+  /* Tabs */
+  --rzero-combo-tab-border-color: #374151;
+  --rzero-combo-tab-color: #94a3b8;
+  --rzero-combo-tab-hover-bg: #374151;
+  --rzero-combo-tab-hover-color: #e5e7eb;
+  --rzero-combo-tab-focus-ring: #60a5fa;
+  --rzero-combo-tab-active-color: #f9fafb;
+  --rzero-combo-tab-active-border-color: #60a5fa;
+  --rzero-combo-tab-badge-bg: #374151;
+  --rzero-combo-tab-badge-color: #94a3b8;
+  --rzero-combo-tab-badge-active-bg: #1e3a5f;
+  --rzero-combo-tab-badge-active-color: #93c5fd;
+}

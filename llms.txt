@@ -1,0 +1,451 @@
+# @reactzero/combo
+
+> Headless, accessible React combobox & select component. ARIA 1.2 compliant, zero dependencies, under 6kB gzipped.
+
+## Overview
+
+@reactzero/combo is a headless React component library for building combobox, autocomplete, select, multi-select, and command palette UIs. It provides a pure state machine, prop getters for ARIA compliance, and optional pre-built components with CSS custom property theming.
+
+## Installation
+
+```bash
+npm install @reactzero/combo
+```
+
+## Entry Points
+
+| Import | Description | Size |
+|--------|-------------|------|
+| `@reactzero/combo` | Full component (Combo, Portal, LiveRegion) + hook | ~6kB |
+| `@reactzero/combo/hook` | Hook only (useCombo) | ~4kB |
+| `@reactzero/combo/headless` | Alias for hook entry | ~4kB |
+| `@reactzero/combo/slots` | Pre-built slot components (CheckboxItem, CustomItem, FooterActions, GroupSeparator) | ~1.5kB |
+| `@reactzero/combo/tabs` | TabbedCombo component | ~7kB |
+| `@reactzero/combo/styles` | Base CSS stylesheet | ~2.5kB |
+| `@reactzero/combo/styles/tabs` | Tabs CSS stylesheet | |
+| `@reactzero/combo/themes/*` | Theme CSS files (default, dark, high-contrast) | |
+
+## Quick Start
+
+### Pre-built Component
+
+```tsx
+import { Combo } from '@reactzero/combo';
+import '@reactzero/combo/styles';
+import '@reactzero/combo/themes/default.css';
+
+function App() {
+  return (
+    <Combo
+      items={['Apple', 'Banana', 'Cherry']}
+      placeholder="Search fruits..."
+    />
+  );
+}
+```
+
+### Headless Hook
+
+```tsx
+import { useCombo } from '@reactzero/combo/hook';
+
+function MyCombo() {
+  const {
+    getInputProps,
+    getMenuProps,
+    getItemProps,
+    isOpen,
+    filteredItems,
+    highlightedIndex,
+    selectedItem,
+  } = useCombo({ items: ['Apple', 'Banana', 'Cherry'] });
+
+  return (
+    <div>
+      <input {...getInputProps({ placeholder: 'Search...' })} />
+      {isOpen && (
+        <ul {...getMenuProps()} style={{ listStyle: 'none' }}>
+          {filteredItems.map((item, i) => (
+            <li
+              key={i}
+              {...getItemProps({ item, index: i })}
+              style={{
+                background: highlightedIndex === i ? '#e5e7eb' : 'transparent',
+                fontWeight: selectedItem === item ? 700 : 400,
+              }}
+            >
+              {String(item)}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
+```
+
+## Hook API: useCombo(options)
+
+### Options
+
+```typescript
+interface UseComboOptions<T> {
+  // Required
+  items: T[];
+
+  // Item accessors
+  itemToString?: (item: T | null) => string;     // Default: String(item)
+  itemToValue?: (item: T) => string | number;     // Default: item.value ?? String(item)
+
+  // Mode & variant
+  mode?: 'single' | 'multi';                      // Default: 'single'
+  variant?: 'input' | 'select';                     // Default: 'input'
+
+  // Controlled state
+  selectedItem?: T | null;
+  defaultSelectedItem?: T | null;
+  selectedItems?: T[];
+  defaultSelectedItems?: T[];
+  inputValue?: string;
+  defaultInputValue?: string;
+  isOpen?: boolean;
+  defaultIsOpen?: boolean;
+
+  // Behavior
+  filterFunction?: (items: T[], inputValue: string) => T[];
+  closeOnSelect?: boolean;           // Default: true for single, false for multi
+  commitOnBlur?: boolean;            // Default: false
+  clearOnSelect?: boolean;           // Default: false
+  deselectionAllowed?: boolean;      // Default: true
+
+  // Accessibility
+  id?: string;
+  ariaLabel?: string;
+  ariaLabelledBy?: string;
+
+  // Callbacks
+  onSelectedItemChange?: (item: T | null) => void;
+  onSelectedItemsChange?: (items: T[]) => void;
+  onIsOpenChange?: (isOpen: boolean) => void;
+  onHighlightedIndexChange?: (index: number) => void;
+  onStateChange?: (state: ComboState<T>) => void;
+  onInputChange?: (value: string) => void;
+
+  // Async
+  debounceMs?: number;
+  isLoading?: boolean;
+  hasMore?: boolean;
+  onLoadMore?: () => void;
+
+  // Disabled states
+  disabled?: boolean | 'loading';
+  readOnly?: boolean;
+  isItemDisabled?: (item: T) => boolean;
+  hideDisabled?: boolean;
+  disabledItemBehavior?: 'skip' | 'focus';
+
+  // Icons & style
+  icons?: Partial<IconSlots>;
+  chevronStyle?: 'caret' | 'arrow' | 'angle' | 'plusminus' | 'dots' | 'none' | 'custom';
+
+  // Portal
+  portalTarget?: Element | null;
+  disablePortal?: boolean;
+
+  // Groups
+  groups?: ComboGroup<T>[];
+}
+```
+
+### Return Value
+
+```typescript
+interface UseComboReturn<T> {
+  // Prop getters (spread onto your elements for ARIA compliance)
+  getInputProps: (userProps?) => InputHTMLAttributes;
+  getToggleButtonProps: (userProps?) => ButtonHTMLAttributes;
+  getLabelProps: (userProps?) => LabelHTMLAttributes;
+  getClearButtonProps: (userProps?) => ButtonHTMLAttributes;
+  getMenuProps: (userProps?) => HTMLAttributes;    // role="listbox"
+  getItemProps: ({ item, index }) => LiHTMLAttributes;  // role="option"
+  getGroupProps: ({ group, index }) => HTMLAttributes;
+  getChevronProps: (userProps?) => HTMLAttributes;
+  getTriggerProps: (userProps?) => ButtonHTMLAttributes; // For select variant
+
+  // State
+  isOpen: boolean;
+  inputValue: string;
+  selectedItem: T | null;
+  selectedItems: T[];
+  highlightedIndex: number;
+  filteredItems: T[];
+  hasSelection: boolean;
+  triggerLabel: string;
+  isLoading: boolean;
+  isEmpty: boolean;
+  isError: boolean;
+  error: Error | null;
+
+  // Icons
+  icons: IconSlots;
+  chevronIcon: ReactNode;
+
+  // Imperative actions
+  openMenu: () => void;
+  closeMenu: () => void;
+  toggleMenu: () => void;
+  selectItem: (item: T) => void;
+  removeItem: (item: T) => void;
+  selectAll: () => void;
+  clearSelection: () => void;
+  setInputValue: (value: string) => void;
+  reset: () => void;
+
+  // Refs
+  inputRef: RefObject<HTMLInputElement>;
+  listboxRef: RefObject<HTMLElement>;
+  triggerRef: RefObject<HTMLElement>;
+}
+```
+
+## Combo Component Props
+
+The pre-built `<Combo>` component extends all hook options with:
+
+```typescript
+interface ComboProps<T> extends UseComboOptions<T> {
+  placeholder?: string;
+  label?: string;
+  theme?: 'default' | 'dark' | 'high-contrast' | 'system';
+  itemVariant?: 'default' | 'checkbox' | 'radio';
+  hintText?: string;
+  errorText?: string;
+  minSelected?: number;
+  maxSelected?: number;
+  classNames?: ComboClassNames;
+
+  // Render props
+  renderItem?: (props: { item: T; index: number; isHighlighted: boolean; isSelected: boolean; isDisabled: boolean }) => ReactNode;
+  renderEmpty?: () => ReactNode;
+  renderLoading?: () => ReactNode;
+  renderError?: (props: { error: Error | null }) => ReactNode;
+  renderFooter?: (props: { selectedItem: T | null; selectedItems: T[]; closeMenu: () => void; clearSelection: () => void }) => ReactNode;
+  renderTrigger?: (props: { getInputProps; getToggleButtonProps; getTriggerProps; getClearButtonProps; getChevronProps; selectedItem; hasSelection; triggerLabel; isOpen; icons; chevronIcon }) => ReactNode;
+  renderGroupHeader?: (props: { group: ComboGroup<T>; index: number }) => ReactNode;
+  renderListHeader?: () => ReactNode;
+}
+```
+
+## Slot Components
+
+### CheckboxItem
+
+```tsx
+import { CheckboxItem } from '@reactzero/combo/slots';
+
+<CheckboxItem
+  label="Option Label"
+  description="Optional description"
+  isSelected={true}
+  isHighlighted={false}
+  isDisabled={false}
+/>
+```
+
+### CustomItem
+
+```tsx
+import { CustomItem } from '@reactzero/combo/slots';
+
+<CustomItem
+  icon={<Avatar />}
+  title="Item Title"
+  description="Optional description"
+  badge={42}
+  meta={<span>metadata</span>}
+/>
+```
+
+### FooterActions
+
+```tsx
+import { FooterActions } from '@reactzero/combo/slots';
+
+<FooterActions
+  selectedCount={3}
+  totalCount={10}
+  actions={[
+    { label: 'Select All', onClick: () => selectAll(), variant: 'default' },
+    { label: 'Clear', onClick: () => clearSelection(), variant: 'ghost' },
+  ]}
+/>
+```
+
+### GroupSeparator
+
+```tsx
+import { GroupSeparator } from '@reactzero/combo/slots';
+
+<GroupSeparator label="Category" count={5} sticky />
+```
+
+## TabbedCombo
+
+```tsx
+import { TabbedCombo } from '@reactzero/combo/tabs';
+import '@reactzero/combo/styles/tabs';
+
+<TabbedCombo
+  tabs={[
+    { id: 'fruits', label: 'Fruits', items: fruitItems, badge: 5 },
+    { id: 'vegs', label: 'Vegetables', items: vegItems, badge: 4 },
+  ]}
+  itemToString={(item) => item?.label ?? ''}
+  placeholder="Search food..."
+/>
+```
+
+## Keyboard Navigation
+
+| Key | Action |
+|-----|--------|
+| ArrowDown | Open menu / highlight next item |
+| ArrowUp | Open menu (last item) / highlight previous item |
+| Enter | Select highlighted item |
+| Escape | Close menu |
+| Home | Highlight first item |
+| End | Highlight last item |
+| PageDown | Jump 10 items forward |
+| PageUp | Jump 10 items back |
+| Tab | Commit selection (if commitOnBlur) and close |
+| Backspace | Remove last chip (multi mode, empty input) |
+| Space | Toggle menu (select variant only) |
+
+## CSS Custom Properties
+
+All visual aspects are customizable via CSS custom properties:
+
+```css
+--rzero-combo-input-border-radius
+--rzero-combo-popover-border-radius
+--rzero-combo-item-highlighted-bg
+--rzero-combo-input-focus-ring
+--rzero-combo-z-index
+/* ... and 100+ more — see ai-reference.md for the full list */
+```
+
+## Common Patterns
+
+### Multi-select with chips
+
+```tsx
+<Combo
+  items={permissions}
+  mode="multi"
+  closeOnSelect={false}
+  itemVariant="checkbox"
+  placeholder="Select permissions..."
+  onSelectedItemsChange={setSelected}
+  renderItem={({ item, isSelected }) => (
+    <CheckboxItem label={item.label} isSelected={isSelected} />
+  )}
+/>
+```
+
+### Select dropdown (no text filtering)
+
+```tsx
+<Combo
+  items={options}
+  variant="select"
+  placeholder="Choose..."
+/>
+```
+
+### Custom filter function
+
+```tsx
+<Combo
+  items={users}
+  filterFunction={(items, query) =>
+    items.filter(u =>
+      u.name.toLowerCase().includes(query.toLowerCase()) ||
+      u.email.toLowerCase().includes(query.toLowerCase())
+    )
+  }
+/>
+```
+
+### Grouped items
+
+```tsx
+<Combo
+  groups={[
+    { label: 'Fruits', items: ['Apple', 'Banana'] },
+    { label: 'Vegetables', items: ['Carrot', 'Broccoli'] },
+  ]}
+  renderGroupHeader={({ group }) => (
+    <GroupSeparator label={group.label} count={group.items.length} sticky />
+  )}
+/>
+```
+
+### Controlled selection
+
+```tsx
+const [selected, setSelected] = useState(null);
+
+<Combo
+  items={items}
+  selectedItem={selected}
+  onSelectedItemChange={setSelected}
+/>
+```
+
+## State Machine Actions
+
+The internal state machine processes these actions:
+
+- `FOCUS` / `BLUR` — Input focus management
+- `INPUT_CHANGE` — Filter items as user types
+- `TOGGLE_MENU` / `OPEN_MENU` / `CLOSE_MENU` — Menu visibility
+- `HIGHLIGHT_ITEM` / `HIGHLIGHT_FIRST` / `HIGHLIGHT_LAST` / `HIGHLIGHT_NEXT` / `HIGHLIGHT_PREV` — Highlight management
+- `SELECT_HIGHLIGHTED` / `SELECT_ITEM` / `DESELECT_ITEM` — Selection
+- `CLEAR_SELECTION` — Remove all selections
+- `SELECT_ALL` — Select all filtered items (multi mode)
+- `REMOVE_LAST_CHIP` — Remove last chip on backspace (multi mode)
+- `SYNC_ITEMS` — Re-filter when items change externally
+- `RESET` — Return to initial state
+
+## Architecture
+
+```
+@reactzero/combo/
+├── src/
+│   ├── types.ts              # All TypeScript interfaces
+│   ├── core/
+│   │   ├── stateMachine.ts   # Pure reducer (no side effects)
+│   │   ├── keyboard.ts       # Key → action mapping
+│   │   ├── scroll.ts         # scrollIntoView helper
+│   │   ├── announce.ts       # Live region announcements
+│   │   ├── ids.ts            # ARIA id generation
+│   │   └── utils.ts          # Shared utilities
+│   ├── hooks/
+│   │   ├── useCombo.ts    # Main hook
+│   │   └── usePosition.ts   # Portal positioning (flip/shift)
+│   ├── components/
+│   │   ├── Combo.tsx      # Pre-built component
+│   │   ├── Portal.tsx        # Portal wrapper
+│   │   ├── LiveRegion.tsx    # ARIA live region
+│   │   └── slots/            # Reusable slot components
+│   ├── icons/
+│   │   └── icons.tsx         # Built-in SVG icons
+│   └── styles/
+│       └── combo.css          # Base styles with CSS custom properties
+├── dist/                     # Built output
+└── themes/                   # Theme CSS files
+```
+
+## License
+
+MIT

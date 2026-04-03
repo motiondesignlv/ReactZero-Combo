@@ -1,0 +1,205 @@
+/* Base structural styles — no colors, no theme opinions.
+   All visual values use CSS custom properties. */
+
+.rzero-combo {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  width: 100%;
+  font-family: inherit;
+  color: var(--rzero-combo-item-color, #374151);
+}
+
+/* Trigger */
+.rzero-combo-trigger {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  border: var(--rzero-combo-input-border, 1px solid #d1d5db);
+  border-radius: var(--rzero-combo-input-border-radius, 6px);
+  background: var(--rzero-combo-input-bg, #ffffff);
+  padding: var(--rzero-combo-input-padding, 8px 12px);
+  min-height: var(--rzero-combo-input-height, 40px);
+  font-size: var(--rzero-combo-input-font-size, 14px);
+  color: var(--rzero-combo-input-color, #111827);
+  cursor: text;
+  transition: box-shadow 150ms ease, border-color 150ms ease;
+}
+
+.rzero-combo-trigger:hover:not([data-disabled]) {
+  border-color: var(--rzero-combo-input-hover-border, #9ca3af);
+}
+
+.rzero-combo-trigger:focus-within {
+  box-shadow: var(--rzero-combo-input-focus-ring, 0 0 0 2px #3b82f6);
+}
+
+.rzero-combo-trigger[data-error] {
+  border-color: var(--rzero-combo-error-border, #dc2626);
+}
+.rzero-combo-trigger[data-error]:focus-within {
+  box-shadow: var(--rzero-combo-error-focus-ring, 0 0 0 2px #dc2626);
+}
+
+/* Select variant trigger error */
+.rzero-combo-select-trigger[data-error] {
+  border-color: var(--rzero-combo-error-border, #dc2626);
+}
+.rzero-combo-select-trigger[data-error]:focus {
+  box-shadow: var(--rzero-combo-error-focus-ring, 0 0 0 2px #dc2626);
+}
+
+/* Subtle indicator when a selection exists but search text replaced the display */
+.rzero-combo-trigger[data-has-hidden-selection] {
+  border-left: var(--rzero-combo-hidden-selection-border, 3px solid #3b82f6);
+}
+
+.rzero-combo-trigger input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font: inherit;
+  color: inherit;
+  min-width: 0;
+  padding: 0;
+}
+
+.rzero-combo-trigger input::placeholder {
+  color: var(--rzero-combo-icon-muted-color, #9ca3af);
+}
+
+/* Disabled / readonly trigger states */
+[data-rzero-trigger][data-disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+[data-rzero-trigger][data-readonly] {
+  cursor: default;
+}
+[data-rzero-trigger][data-loading] {
+  cursor: wait;
+}
+
+/* Popover / listbox */
+.rzero-combo-list {
+  list-style: none;
+  margin: 0;
+  padding: 4px 0;
+  background: var(--rzero-combo-popover-bg, #ffffff);
+  color: var(--rzero-combo-item-color, #374151);
+  border: var(--rzero-combo-popover-border, 1px solid #e5e7eb);
+  border-radius: var(--rzero-combo-popover-border-radius, 8px);
+  box-shadow: var(--rzero-combo-popover-shadow, 0 8px 24px rgba(0,0,0,0.12));
+  z-index: var(--rzero-combo-z-index, 9999);
+}
+
+.rzero-combo-list[data-state="closed"] {
+  display: none;
+}
+
+/* Items */
+.rzero-combo-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: var(--rzero-combo-item-height, 36px);
+  padding: var(--rzero-combo-item-padding, 0 12px);
+  color: var(--rzero-combo-item-color, #374151);
+  cursor: pointer;
+  user-select: none;
+}
+
+.rzero-combo-item[data-highlighted] {
+  background: var(--rzero-combo-item-highlighted-bg, #dbeafe);
+}
+
+.rzero-combo-item[data-selected] {
+  background: var(--rzero-combo-item-selected-bg, #eff6ff);
+  color: var(--rzero-combo-item-selected-color, #1d4ed8);
+}
+
+.rzero-combo-item[data-disabled] {
+  opacity: var(--rzero-combo-item-disabled-opacity, 0.4);
+  cursor: not-allowed;
+}
+
+/* Check icon in items */
+.rzero-combo-check {
+  display: flex;
+  align-items: center;
+  margin-left: 8px;
+}
+
+/* Toggle / clear buttons */
+.rzero-combo-trigger button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--rzero-combo-icon-muted-color, #9ca3af);
+  padding: 4px;
+  min-width: 24px;
+  min-height: 24px;
+  flex-shrink: 0;
+}
+
+.rzero-combo-trigger button:hover {
+  color: var(--rzero-combo-icon-color, currentColor);
+}
+
+/* Chevron animation */
+[data-rzero-chevron] {
+  display: inline-flex;
+  transition: transform var(--rzero-combo-transition-duration, 150ms)
+              var(--rzero-combo-transition-easing, ease);
+}
+
+[aria-expanded="true"] [data-rzero-chevron] {
+  transform: rotate(180deg);
+}
+
+/* Loading spinner keyframe */
+@keyframes rzero-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Group headers */
+.rzero-combo-group-header {
+  color: var(--rzero-combo-group-header-color, #6b7280);
+  font-size: var(--rzero-combo-group-header-font-size, 11px);
+  font-weight: var(--rzero-combo-group-header-font-weight, 600);
+  text-transform: var(--rzero-combo-group-header-text-transform, uppercase);
+  letter-spacing: var(--rzero-combo-group-header-letter-spacing, 0.05em);
+  padding: 8px 12px 4px;
+}
+
+/* Icon sizing */
+[data-rzero-chevron] svg,
+.rzero-combo-check svg {
+  width: var(--rzero-combo-icon-size-md, 16px);
+  height: var(--rzero-combo-icon-size-md, 16px);
+}
+
+/* Label */
+.rzero-combo-label {
+  display: block;
+  font-size: var(--rzero-combo-label-font-size, 14px);
+  font-weight: var(--rzero-combo-label-font-weight, 500);
+  color: var(--rzero-combo-label-color, #374151);
+  margin-bottom: var(--rzero-combo-label-margin-bottom, 6px);
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .rzero-combo,
+  .rzero-combo *,
+  .rzero-combo *::before,
+  .rzero-combo *::after {
+    transition-duration: 0s !important;
+    animation-duration: 0s !important;
+  }
+}

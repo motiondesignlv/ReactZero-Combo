@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "jsx": "react-jsx",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "outDir": "dist",
+    "paths": {
+      "@reactzero/combo": ["../src/entries/index.ts"],
+      "@reactzero/combo/slots": ["../src/entries/slots.ts"],
+      "@reactzero/combo/tabs": ["../src/entries/tabs.ts"]
+    }
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx", "../src/css.d.ts"]
+}

@@ -1,0 +1,36 @@
+/* ------------------------------------------------------------------ */
+/* Checkbox variant — pure CSS via ::before pseudo-element            */
+/* ------------------------------------------------------------------ */
+
+.rzero-combo-item[data-variant="checkbox"] {
+  gap: 8px;
+  justify-content: flex-start;
+}
+
+.rzero-combo-item[data-variant="checkbox"]::before {
+  content: '';
+  flex-shrink: 0;
+  width: var(--rzero-combo-checkbox-size, 16px);
+  height: var(--rzero-combo-checkbox-size, 16px);
+  border: 2px solid var(--rzero-combo-checkbox-border, #d1d5db);
+  border-radius: var(--rzero-combo-checkbox-radius, 3px);
+  background: var(--rzero-combo-checkbox-bg, #ffffff);
+  transition: background 150ms ease, border-color 150ms ease;
+}
+
+.rzero-combo-item[data-variant="checkbox"][data-selected]::before {
+  background: var(--rzero-combo-checkbox-checked-bg, #3b82f6);
+  border-color: var(--rzero-combo-checkbox-checked-border, #3b82f6);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='white'%3E%3Cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3E%3C/svg%3E");
+  background-size: 12px 12px;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.rzero-combo-item[data-variant="checkbox"][data-highlighted]::before {
+  border-color: var(--rzero-combo-checkbox-hover-border, #9ca3af);
+}
+
+.rzero-combo-item[data-variant="checkbox"][data-selected][data-highlighted]::before {
+  border-color: var(--rzero-combo-checkbox-checked-border, #3b82f6);
+}

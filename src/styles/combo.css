@@ -1,0 +1,11 @@
+@import "tailwindcss";
+@import './base.css';
+@import './select.css';
+@import './states.css';
+@import './footer.css';
+@import './groups.css';
+@import './checkbox.css';
+@import './radio.css';
+@import './custom-item.css';
+@import './chips.css';
+@import './meta.css';

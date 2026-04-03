@@ -1,0 +1,22 @@
+/* Empty / loading states */
+.rzero-combo-empty,
+.rzero-combo-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--rzero-combo-item-height, 36px);
+  padding: var(--rzero-combo-item-padding, 0 12px);
+  color: var(--rzero-combo-icon-muted-color, #9ca3af);
+  font-size: var(--rzero-combo-input-font-size, 14px);
+}
+
+/* Error state */
+.rzero-combo-error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--rzero-combo-item-height, 36px);
+  padding: var(--rzero-combo-item-padding, 0 12px);
+  color: var(--rzero-combo-error-color, #dc2626);
+  font-size: var(--rzero-combo-input-font-size, 14px);
+}

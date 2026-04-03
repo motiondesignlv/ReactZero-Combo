@@ -1,0 +1,126 @@
+:root,
+[data-rzero-theme="default"] {
+  /* Layout */
+  --rzero-combo-z-index: 9999;
+  --rzero-combo-max-height: 320px;
+  --rzero-combo-min-width: 200px;
+
+  /* Input */
+  --rzero-combo-input-height: 40px;
+  --rzero-combo-input-padding: 8px 12px;
+  --rzero-combo-input-bg: #ffffff;
+  --rzero-combo-input-border: 1px solid #d1d5db;
+  --rzero-combo-input-border-radius: 6px;
+  --rzero-combo-input-font-size: 14px;
+  --rzero-combo-input-color: #111827;
+  --rzero-combo-input-focus-ring: 0 0 0 2px #3b82f6;
+
+  /* Popover */
+  --rzero-combo-popover-bg: #ffffff;
+  --rzero-combo-popover-border: 1px solid #e5e7eb;
+  --rzero-combo-popover-border-radius: 8px;
+  --rzero-combo-popover-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+
+  /* Items */
+  --rzero-combo-item-height: 36px;
+  --rzero-combo-item-padding: 0 12px;
+  --rzero-combo-item-color: #374151;
+  --rzero-combo-item-hover-bg: #f3f4f6;
+  --rzero-combo-item-selected-bg: #eff6ff;
+  --rzero-combo-item-selected-color: #1d4ed8;
+  --rzero-combo-item-highlighted-bg: #dbeafe;
+  --rzero-combo-item-disabled-opacity: 0.4;
+
+  /* Group headers */
+  --rzero-combo-group-header-color: #6b7280;
+  --rzero-combo-group-header-font-size: 11px;
+  --rzero-combo-group-header-font-weight: 600;
+  --rzero-combo-group-header-text-transform: uppercase;
+  --rzero-combo-group-header-letter-spacing: 0.05em;
+
+  /* Icons */
+  --rzero-combo-icon-size-sm: 12px;
+  --rzero-combo-icon-size-md: 16px;
+  --rzero-combo-icon-size-lg: 20px;
+  --rzero-combo-icon-color: currentColor;
+  --rzero-combo-icon-muted-color: #9ca3af;
+
+  /* Chips */
+  --rzero-combo-chip-bg: #e0e7ff;
+  --rzero-combo-chip-color: #3730a3;
+  --rzero-combo-chip-border-radius: 4px;
+  --rzero-combo-chip-font-size: 12px;
+
+  /* Transitions */
+  --rzero-combo-transition-duration: 150ms;
+  --rzero-combo-transition-easing: ease;
+
+  /* Checkbox variant */
+  --rzero-combo-checkbox-size: 16px;
+  --rzero-combo-checkbox-border: #d1d5db;
+  --rzero-combo-checkbox-bg: #ffffff;
+  --rzero-combo-checkbox-radius: 3px;
+  --rzero-combo-checkbox-checked-bg: #3b82f6;
+  --rzero-combo-checkbox-checked-border: #3b82f6;
+  --rzero-combo-checkbox-hover-border: #9ca3af;
+
+  /* Radio variant */
+  --rzero-combo-radio-size: 16px;
+  --rzero-combo-radio-border: #d1d5db;
+  --rzero-combo-radio-bg: #ffffff;
+  --rzero-combo-radio-checked-border: #3b82f6;
+  --rzero-combo-radio-checked-dot: #3b82f6;
+  --rzero-combo-radio-hover-border: #9ca3af;
+
+  /* Custom item */
+  --rzero-combo-custom-item-icon-size: 32px;
+  --rzero-combo-custom-item-icon-radius: 6px;
+  --rzero-combo-item-description-font-size: 12px;
+  --rzero-combo-item-description-color: #6b7280;
+  --rzero-combo-item-meta-font-size: 12px;
+  --rzero-combo-item-meta-color: #9ca3af;
+
+  /* Badges */
+  --rzero-combo-badge-radius: 10px;
+  --rzero-combo-badge-bg: #e5e7eb;
+  --rzero-combo-badge-color: #374151;
+  --rzero-combo-badge-font-size: 11px;
+
+  /* Footer actions */
+  --rzero-combo-footer-action-border: 1px solid #d1d5db;
+  --rzero-combo-footer-action-border-radius: 4px;
+  --rzero-combo-footer-action-bg: transparent;
+  --rzero-combo-footer-action-color: #374151;
+  --rzero-combo-footer-action-font-size: 13px;
+  --rzero-combo-footer-action-hover-bg: #f3f4f6;
+  --rzero-combo-footer-action-primary-bg: #3b82f6;
+  --rzero-combo-footer-action-primary-color: #ffffff;
+  --rzero-combo-footer-action-primary-hover-bg: #2563eb;
+  --rzero-combo-footer-note-font-size: 12px;
+  --rzero-combo-footer-note-color: #9ca3af;
+
+  /* Separator */
+  --rzero-combo-separator-color: #e5e7eb;
+
+  /* Group header count badge */
+  --rzero-combo-group-header-count-bg: #e5e7eb;
+  --rzero-combo-group-header-count-color: #6b7280;
+
+  /* Tabs */
+  --rzero-combo-tab-border-color: #e5e7eb;
+  --rzero-combo-tab-padding: 8px 12px;
+  --rzero-combo-tab-bg: transparent;
+  --rzero-combo-tab-color: #6b7280;
+  --rzero-combo-tab-font-size: 13px;
+  --rzero-combo-tab-font-weight: 500;
+  --rzero-combo-tab-hover-bg: #f3f4f6;
+  --rzero-combo-tab-hover-color: #374151;
+  --rzero-combo-tab-focus-ring: #3b82f6;
+  --rzero-combo-tab-active-color: #111827;
+  --rzero-combo-tab-active-border-color: #3b82f6;
+  --rzero-combo-tab-active-bg: transparent;
+  --rzero-combo-tab-badge-bg: #e5e7eb;
+  --rzero-combo-tab-badge-color: #6b7280;
+  --rzero-combo-tab-badge-active-bg: #dbeafe;
+  --rzero-combo-tab-badge-active-color: #1d4ed8;
+}

@@ -1,0 +1,35 @@
+/* Select variant trigger */
+.rzero-combo-select-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  border: var(--rzero-combo-input-border, 1px solid #d1d5db);
+  border-radius: var(--rzero-combo-input-border-radius, 6px);
+  background: var(--rzero-combo-input-bg, #ffffff);
+  padding: var(--rzero-combo-input-padding, 8px 12px);
+  min-height: var(--rzero-combo-input-height, 40px);
+  font-size: var(--rzero-combo-input-font-size, 14px);
+  color: var(--rzero-combo-input-color, #111827);
+  cursor: pointer;
+  transition: box-shadow 150ms ease, border-color 150ms ease;
+}
+
+.rzero-combo-select-trigger:focus-visible {
+  box-shadow: var(--rzero-combo-input-focus-ring, 0 0 0 2px #3b82f6);
+  outline: none;
+}
+
+.rzero-combo-select-trigger:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.rzero-combo-select-value {
+  flex: 1;
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

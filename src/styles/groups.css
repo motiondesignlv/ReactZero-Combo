@@ -1,0 +1,23 @@
+/* Sticky group headers */
+.rzero-combo-group-header[data-sticky] {
+  position: sticky;
+  top: 0;
+  background: var(--rzero-combo-popover-bg, #ffffff);
+  z-index: 1;
+}
+
+/* Group header with count badge */
+.rzero-combo-group-header-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 9px;
+  background: var(--rzero-combo-group-header-count-bg, #e5e7eb);
+  color: var(--rzero-combo-group-header-count-color, #6b7280);
+  font-size: 10px;
+  font-weight: 600;
+  margin-left: 6px;
+}

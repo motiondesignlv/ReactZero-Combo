@@ -1,0 +1,94 @@
+/* ------------------------------------------------------------------ */
+/* Tabbed popover styles                                              */
+/* All visual values via CSS custom properties for easy theming.       */
+/* ------------------------------------------------------------------ */
+
+.rzero-combo-tabs {
+  display: flex;
+  align-items: stretch;
+  border-bottom: 1px solid var(--rzero-combo-tab-border-color, #e5e7eb);
+  padding: 0 4px;
+  gap: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.rzero-combo-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.rzero-combo-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: var(--rzero-combo-tab-padding, 8px 12px);
+  border: none;
+  background: var(--rzero-combo-tab-bg, transparent);
+  color: var(--rzero-combo-tab-color, #6b7280);
+  font-size: var(--rzero-combo-tab-font-size, 13px);
+  font-weight: var(--rzero-combo-tab-font-weight, 500);
+  cursor: pointer;
+  white-space: nowrap;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition: color 150ms ease, border-color 150ms ease, background 150ms ease;
+}
+
+.rzero-combo-tab:hover {
+  background: var(--rzero-combo-tab-hover-bg, #f3f4f6);
+  color: var(--rzero-combo-tab-hover-color, #374151);
+}
+
+.rzero-combo-tab:focus-visible {
+  outline: 2px solid var(--rzero-combo-tab-focus-ring, #3b82f6);
+  outline-offset: -2px;
+  border-radius: 2px;
+}
+
+.rzero-combo-tab[data-active] {
+  color: var(--rzero-combo-tab-active-color, #111827);
+  border-bottom-color: var(--rzero-combo-tab-active-border-color, #3b82f6);
+  background: var(--rzero-combo-tab-active-bg, transparent);
+}
+
+.rzero-combo-tab[data-disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Badge inside tab */
+.rzero-combo-tab-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 9px;
+  background: var(--rzero-combo-tab-badge-bg, #e5e7eb);
+  color: var(--rzero-combo-tab-badge-color, #6b7280);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.rzero-combo-tab[data-active] .rzero-combo-tab-badge {
+  background: var(--rzero-combo-tab-badge-active-bg, #dbeafe);
+  color: var(--rzero-combo-tab-badge-active-color, #1d4ed8);
+}
+
+/* Tab panel content area */
+.rzero-combo-tab-panel {
+  outline: none;
+}
+
+/* Icon inside tab */
+.rzero-combo-tab-icon {
+  display: inline-flex;
+  align-items: center;
+}
+
+.rzero-combo-tab-icon svg {
+  width: var(--rzero-combo-icon-size-sm, 14px);
+  height: var(--rzero-combo-icon-size-sm, 14px);
+}

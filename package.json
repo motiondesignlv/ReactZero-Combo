@@ -1,0 +1,219 @@
+{
+  "name": "@reactzero/combo",
+  "version": "0.1.0",
+  "description": "Headless, accessible React combo & select. Attach a dropdown to anything. Zero dependencies, ARIA 1.2 compliant, <7 kB.",
+  "keywords": [
+    "react",
+    "combo",
+    "combobox",
+    "autocomplete",
+    "select",
+    "multi-select",
+    "accessible",
+    "a11y",
+    "headless",
+    "zero-dependency",
+    "css-variables",
+    "themes",
+    "typescript"
+  ],
+  "license": "MIT",
+  "author": {
+    "name": "Luis Vargas",
+    "email": "lvargasdesign@gmail.com",
+    "url": "https://github.com/motiondesignlv"
+  },
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.cjs"
+      }
+    },
+    "./hook": {
+      "import": {
+        "types": "./dist/entries/hook.d.ts",
+        "default": "./dist/hook.js"
+      },
+      "require": {
+        "types": "./dist/entries/hook.d.ts",
+        "default": "./dist/hook.cjs"
+      }
+    },
+    "./headless": {
+      "import": {
+        "types": "./dist/entries/hook.d.ts",
+        "default": "./dist/hook.js"
+      },
+      "require": {
+        "types": "./dist/entries/hook.d.ts",
+        "default": "./dist/hook.cjs"
+      }
+    },
+    "./slots": {
+      "import": {
+        "types": "./dist/entries/slots.d.ts",
+        "default": "./dist/slots.js"
+      },
+      "require": {
+        "types": "./dist/entries/slots.d.ts",
+        "default": "./dist/slots.cjs"
+      }
+    },
+    "./tabs": {
+      "import": {
+        "types": "./dist/entries/tabs.d.ts",
+        "default": "./dist/tabs.js"
+      },
+      "require": {
+        "types": "./dist/entries/tabs.d.ts",
+        "default": "./dist/tabs.cjs"
+      }
+    },
+    "./hook-bare": {
+      "import": {
+        "types": "./dist/entries/hook-bare.d.ts",
+        "default": "./dist/hook-bare.js"
+      },
+      "require": {
+        "types": "./dist/entries/hook-bare.d.ts",
+        "default": "./dist/hook-bare.cjs"
+      }
+    },
+    "./icons": {
+      "import": {
+        "types": "./dist/entries/icons.d.ts",
+        "default": "./dist/icons.js"
+      },
+      "require": {
+        "types": "./dist/entries/icons.d.ts",
+        "default": "./dist/icons.cjs"
+      }
+    },
+    "./position": {
+      "import": {
+        "types": "./dist/entries/position.d.ts",
+        "default": "./dist/position.js"
+      },
+      "require": {
+        "types": "./dist/entries/position.d.ts",
+        "default": "./dist/position.cjs"
+      }
+    },
+    "./styles": "./dist/style.css",
+    "./styles/base": "./dist/styles/base.css",
+    "./styles/select": "./dist/styles/select.css",
+    "./styles/states": "./dist/styles/states.css",
+    "./styles/footer": "./dist/styles/footer.css",
+    "./styles/groups": "./dist/styles/groups.css",
+    "./styles/checkbox": "./dist/styles/checkbox.css",
+    "./styles/radio": "./dist/styles/radio.css",
+    "./styles/custom-item": "./dist/styles/custom-item.css",
+    "./styles/chips": "./dist/styles/chips.css",
+    "./styles/meta": "./dist/styles/meta.css",
+    "./styles/tabs": "./dist/tabs.css",
+    "./themes/*": "./dist/themes/*.css",
+    "./package.json": "./package.json"
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md",
+    "CHANGELOG.md"
+  ],
+  "sideEffects": [
+    "*.css"
+  ],
+  "scripts": {
+    "dev": "npm run demo:dev",
+    "build": "vite build && tsc -p tsconfig.build.json && cp -r src/themes dist/themes && mkdir -p dist/styles && cp src/styles/base.css src/styles/select.css src/styles/states.css src/styles/footer.css src/styles/groups.css src/styles/checkbox.css src/styles/radio.css src/styles/custom-item.css src/styles/chips.css src/styles/meta.css dist/styles/",
+    "postbuild": "node -e \"const fs=require('fs');const css=fs.readFileSync('dist/style.css','utf8');if(css.includes('@import')){console.error('ERROR: CSS still contains @import');process.exit(1);}if(!fs.existsSync('dist/styles/base.css')){console.error('ERROR: dist/styles/base.css missing');process.exit(1);}const js=fs.readFileSync('dist/index.js','utf8');console.log('Build OK — JS:',Math.round(js.length/1024)+'kB, CSS:',Math.round(css.length/1024)+'kB');\"",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src --ext .ts,.tsx --report-unused-disable-directives --max-warnings 0",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "ci": "npm run typecheck && npm run lint && npm run test",
+    "size": "size-limit",
+    "size:check": "size-limit --limit",
+    "demo:dev": "vite dev --config demo/vite.config.ts",
+    "demo:build": "vite build --config demo/vite.config.ts",
+    "demo:preview": "vite preview --config demo/vite.config.ts"
+  },
+  "peerDependencies": {
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
+  },
+  "devDependencies": {
+    "@size-limit/preset-small-lib": "^11.2.0",
+    "@tailwindcss/postcss": "^4.2.1",
+    "@testing-library/dom": "^10.4.1",
+    "@testing-library/jest-dom": "^6.4.0",
+    "@testing-library/react": "^16.0.0",
+    "@testing-library/user-event": "^14.5.0",
+    "@types/jest-axe": "^3.5.0",
+    "@types/react": "^18.3.0",
+    "@types/react-dom": "^18.3.0",
+    "@typescript-eslint/eslint-plugin": "^8.0.0",
+    "@typescript-eslint/parser": "^8.0.0",
+    "@vitejs/plugin-react": "^4.3.0",
+    "@vitest/coverage-v8": "^2.0.0",
+    "autoprefixer": "^10.4.27",
+    "eslint": "^9.0.0",
+    "eslint-plugin-jsx-a11y": "^6.10.0",
+    "eslint-plugin-react": "^7.37.0",
+    "eslint-plugin-react-hooks": "^5.0.0",
+    "jest-axe": "^9.0.0",
+    "jsdom": "^25.0.0",
+    "postcss": "^8.5.8",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "size-limit": "^11.2.0",
+    "tailwindcss": "^4.2.1",
+    "typescript": "^6.0.0",
+    "vite": "^5.0.0",
+    "vitest": "^2.0.0"
+  },
+  "size-limit": [
+    {
+      "path": "dist/hook.js",
+      "limit": "5 kB"
+    },
+    {
+      "path": "dist/hook-bare.js",
+      "limit": "5 kB"
+    },
+    {
+      "path": "dist/index.js",
+      "limit": "9 kB"
+    },
+    {
+      "path": "dist/slots.js",
+      "limit": "1.5 kB"
+    },
+    {
+      "path": "dist/tabs.js",
+      "limit": "7.5 kB"
+    },
+    {
+      "path": "dist/icons.js",
+      "limit": "2 kB"
+    },
+    {
+      "path": "dist/position.js",
+      "limit": "1.5 kB"
+    },
+    {
+      "path": "dist/style.css",
+      "limit": "5 kB"
+    }
+  ]
+}

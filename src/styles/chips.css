@@ -1,0 +1,71 @@
+/* ------------------------------------------------------------------ */
+/* Multi-select chip trigger                                          */
+/* ------------------------------------------------------------------ */
+
+.rzero-combo-trigger--multi {
+  flex-wrap: nowrap;
+  gap: 4px;
+  padding: var(--rzero-combo-input-padding-multi, 4px 8px);
+  align-items: flex-start;
+}
+
+.rzero-combo-trigger-content {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  align-items: center;
+  flex: 1 1 0%;
+  min-width: 0;
+}
+
+.rzero-combo-trigger-content input {
+  flex: 1 1 60px;
+  min-width: 60px;
+  padding: 2px 4px;
+}
+
+.rzero-combo-trigger-actions {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  flex-shrink: 0;
+  padding-top: 2px;
+}
+
+.rzero-combo-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: var(--rzero-combo-chip-padding, 2px 6px);
+  background: var(--rzero-combo-chip-bg, #e5e7eb);
+  color: var(--rzero-combo-chip-color, #374151);
+  border-radius: var(--rzero-combo-chip-radius, 4px);
+  font-size: var(--rzero-combo-chip-font-size, 13px);
+  line-height: 1.4;
+  max-width: 150px;
+}
+
+.rzero-combo-chip-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rzero-combo-chip-remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin-left: 2px;
+  color: var(--rzero-combo-chip-remove-color, #6b7280);
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.rzero-combo-chip-remove:hover {
+  color: var(--rzero-combo-chip-remove-hover-color, #111827);
+  background: var(--rzero-combo-chip-remove-hover-bg, rgba(0,0,0,0.08));
+}

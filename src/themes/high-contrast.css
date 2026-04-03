@@ -1,0 +1,98 @@
+[data-rzero-theme="high-contrast"] {
+  /* Input */
+  --rzero-combo-input-bg: #000000;
+  --rzero-combo-input-border: 2px solid #ffffff;
+  --rzero-combo-input-color: #ffffff;
+  --rzero-combo-input-hover-border: #ffff00;
+  --rzero-combo-input-focus-ring: 0 0 0 3px #ffff00;
+
+  /* Label & hint */
+  --rzero-combo-label-color: #ffffff;
+  --rzero-combo-hint-color: #cccccc;
+
+  /* Error states */
+  --rzero-combo-error-border: #ff6666;
+  --rzero-combo-error-color: #ff6666;
+  --rzero-combo-error-text-color: #ff6666;
+  --rzero-combo-error-focus-ring: 0 0 0 3px #ff6666;
+
+  /* Selection count */
+  --rzero-combo-selection-count-color: #cccccc;
+  --rzero-combo-selection-count-warning-color: #ffff00;
+
+  /* Chips */
+  --rzero-combo-chip-remove-color: #000000;
+  --rzero-combo-chip-remove-hover-color: #000000;
+  --rzero-combo-chip-remove-hover-bg: rgba(0, 0, 0, 0.2);
+
+  --rzero-combo-popover-bg: #000000;
+  --rzero-combo-popover-border: 2px solid #ffffff;
+  --rzero-combo-popover-shadow: none;
+
+  --rzero-combo-item-color: #ffffff;
+  --rzero-combo-item-hover-bg: #333333;
+  --rzero-combo-item-selected-bg: #ffff00;
+  --rzero-combo-item-selected-color: #000000;
+  --rzero-combo-item-highlighted-bg: #0000ff;
+  --rzero-combo-item-disabled-opacity: 0.6;
+
+  --rzero-combo-group-header-color: #ffffff;
+
+  --rzero-combo-icon-muted-color: #cccccc;
+
+  --rzero-combo-chip-bg: #ffff00;
+  --rzero-combo-chip-color: #000000;
+
+  /* Checkbox variant */
+  --rzero-combo-checkbox-border: #ffffff;
+  --rzero-combo-checkbox-bg: #000000;
+  --rzero-combo-checkbox-checked-bg: #ffff00;
+  --rzero-combo-checkbox-checked-border: #ffff00;
+  --rzero-combo-checkbox-hover-border: #ffff00;
+
+  /* Radio variant */
+  --rzero-combo-radio-border: #ffffff;
+  --rzero-combo-radio-bg: #000000;
+  --rzero-combo-radio-checked-border: #ffff00;
+  --rzero-combo-radio-checked-dot: #ffff00;
+  --rzero-combo-radio-hover-border: #ffff00;
+
+  /* Custom item */
+  --rzero-combo-item-description-color: #cccccc;
+  --rzero-combo-item-meta-color: #cccccc;
+
+  /* Badges */
+  --rzero-combo-badge-bg: #ffffff;
+  --rzero-combo-badge-color: #000000;
+
+  /* Footer */
+  --rzero-combo-footer-border-top: 2px solid #ffffff;
+  --rzero-combo-footer-color: #cccccc;
+  --rzero-combo-footer-action-border: 2px solid #ffffff;
+  --rzero-combo-footer-action-color: #ffffff;
+  --rzero-combo-footer-action-hover-bg: #333333;
+  --rzero-combo-footer-action-primary-bg: #ffff00;
+  --rzero-combo-footer-action-primary-color: #000000;
+  --rzero-combo-footer-action-primary-hover-bg: #cccc00;
+  --rzero-combo-footer-note-color: #cccccc;
+
+  /* Separator */
+  --rzero-combo-separator-color: #ffffff;
+
+  /* Group header count badge */
+  --rzero-combo-group-header-count-bg: #ffffff;
+  --rzero-combo-group-header-count-color: #000000;
+
+  /* Tabs */
+  --rzero-combo-tab-border-color: #ffffff;
+  --rzero-combo-tab-color: #cccccc;
+  --rzero-combo-tab-hover-bg: #333333;
+  --rzero-combo-tab-hover-color: #ffffff;
+  --rzero-combo-tab-focus-ring: #ffff00;
+  --rzero-combo-tab-active-color: #ffffff;
+  --rzero-combo-tab-active-border-color: #ffff00;
+  --rzero-combo-tab-badge-bg: #ffffff;
+  --rzero-combo-tab-badge-color: #000000;
+  --rzero-combo-tab-badge-active-bg: #ffff00;
+  --rzero-combo-tab-badge-active-color: #000000;
+}
