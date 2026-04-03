@@ -23,6 +23,14 @@
     "email": "lvargasdesign@gmail.com",
     "url": "https://github.com/motiondesignlv"
   },
+  "homepage": "https://motiondesignlv.github.io/ReactZero-Combo/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/motiondesignlv/ReactZero-Combo.git"
+  },
+  "bugs": {
+    "url": "https://github.com/motiondesignlv/ReactZero-Combo/issues"
+  },
   "type": "module",
   "exports": {
     ".": {

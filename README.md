@@ -2,9 +2,19 @@
 
 Headless, accessible React combo & select. **Zero dependencies.** ARIA 1.2 compliant, < 7 kB gzipped.
 
-[![npm version](https://img.shields.io/npm/v/@reactzero/combo)](https://www.npmjs.com/package/@reactzero/combo)
-[![bundle size](https://img.shields.io/bundlephobia/minzip/@reactzero/combo)](https://bundlephobia.com/package/@reactzero/combo)
+[![npm version](https://img.shields.io/npm/v/@reactzero/combo?color=cb0000)](https://www.npmjs.com/package/@reactzero/combo)
+[![npm downloads](https://img.shields.io/npm/dm/@reactzero/combo)](https://www.npmjs.com/package/@reactzero/combo)
+[![bundle size](https://img.shields.io/bundlejs/size/%40reactzero%2Fcombo?color=43a047)](https://bundlejs.com/?q=@reactzero/combo)
+[![hook size](https://img.shields.io/badge/hook-4.8%20kB-43a047)](https://bundlejs.com/?q=@reactzero/combo/hook)
+[![zero deps](https://img.shields.io/badge/dependencies-0-43a047)](https://www.npmjs.com/package/@reactzero/combo?activeTab=dependencies)
 [![license](https://img.shields.io/npm/l/@reactzero/combo)](./LICENSE)
+
+[![TypeScript](https://img.shields.io/badge/TypeScript-first-3178c6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![React 18+](https://img.shields.io/badge/React-18%2B-61dafb?logo=react&logoColor=white)](https://react.dev/)
+[![a11y](https://img.shields.io/badge/a11y-ARIA%201.2-6366f1)](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/)
+[![tree-shakable](https://img.shields.io/badge/tree--shakable-yes-43a047)]()
+[![CSS variables](https://img.shields.io/badge/theming-CSS%20variables-f59e0b)]()
+[![Live Demo](https://img.shields.io/badge/demo-live%20%E2%86%97-blue)](https://motiondesignlv.github.io/ReactZero-Combo/)
 
 ## Features
 
@@ -175,13 +185,8 @@ Or use built-in themes:
 
 ## Documentation
 
-- [Getting Started](https://reactzero-combo.dev/guide/getting-started)
-- [Headless Usage](https://reactzero-combo.dev/guide/headless-usage)
-- [Pre-built Component](https://reactzero-combo.dev/guide/pre-built)
-- [Theming](https://reactzero-combo.dev/guide/theming)
-- [Accessibility](https://reactzero-combo.dev/guide/accessibility)
-- [API Reference — useCombo](https://reactzero-combo.dev/api/use-combo)
-- [API Reference — Combo](https://reactzero-combo.dev/api/combo)
+- [Live Demo & Examples](https://motiondesignlv.github.io/ReactZero-Combo/)
+- [AI Reference](./ai-reference.md) — feed to your AI coding assistant for complete API docs
 
 ## License
 
