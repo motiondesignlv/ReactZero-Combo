@@ -1,6 +1,6 @@
 {
   "name": "@reactzero/combo",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Headless, accessible React combo & select. Attach a dropdown to anything. Zero dependencies, ARIA 1.2 compliant, <7 kB.",
   "keywords": [
     "react",
