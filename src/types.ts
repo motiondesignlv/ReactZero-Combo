@@ -139,6 +139,7 @@ export interface UseComboOptions<T> {
   filterFunction?: (items: T[], inputValue: string) => T[];
   closeOnSelect?: boolean;
   commitOnBlur?: boolean;
+  /** @experimental Planned for Phase 2 (multi-select). Passing this prop has no effect today. */
   clearOnSelect?: boolean;
   deselectionAllowed?: boolean;
   maxSelected?: number;

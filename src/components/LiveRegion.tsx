@@ -18,6 +18,14 @@ const srOnlyStyle: React.CSSProperties = {
   borderWidth: 0,
 };
 
+/**
+ * Declarative live region. Renders a visually-hidden status node that
+ * announces `message` to screen readers, clearing after `clearAfterMs`.
+ *
+ * Use this when you want a region scoped to your component (cleaned up on
+ * unmount). For imperative announcements outside React render — e.g. from a
+ * non-component utility — use the `announce()` helper from `core/announce`.
+ */
 export function LiveRegion({
   message,
   id,

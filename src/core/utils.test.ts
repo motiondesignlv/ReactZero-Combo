@@ -134,10 +134,11 @@ describe('defaultItemToValue', () => {
     expect(defaultItemToValue({ foo: 'bar' })).toBe('[object Object]');
   });
 
-  it('handles null values inside .value', () => {
-    // .value exists but is null — still returned as value
-    const item = { value: null as unknown as string };
-    expect(defaultItemToValue(item)).toBeNull();
+  it('coerces non-primitive .value to a string so comparisons stay stable', () => {
+    // null/undefined `.value` would all compare equal in the reducer; coerce to string instead
+    expect(defaultItemToValue({ value: null as unknown as string })).toBe('null');
+    expect(defaultItemToValue({ value: undefined as unknown as string })).toBe('undefined');
+    expect(defaultItemToValue({ value: { nested: 1 } as unknown as string })).toBe('[object Object]');
   });
 });
 

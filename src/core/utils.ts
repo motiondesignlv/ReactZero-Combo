@@ -24,11 +24,17 @@ export const defaultItemToString = <T>(item: T | null): string => {
 
 /**
  * Default itemToValue — handles objects with `.value`, primitives.
+ * Falls back to `String(item)` for any non-string/number `.value` so equality
+ * comparisons in the reducer remain stable. Pass a custom `itemToValue` if
+ * your items use object identifiers.
  */
 export const defaultItemToValue = <T>(item: T): string | number => {
   if (typeof item === 'string' || typeof item === 'number') return item;
-  if (typeof item === 'object' && item != null && 'value' in (item as object))
-    return (item as Record<string, unknown>).value as string | number;
+  if (typeof item === 'object' && item != null && 'value' in (item as object)) {
+    const v = (item as Record<string, unknown>).value;
+    if (typeof v === 'string' || typeof v === 'number') return v;
+    return String(v);
+  }
   return String(item);
 };
 

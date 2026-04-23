@@ -12,8 +12,8 @@ Headless, accessible React combo & select. **Zero dependencies.** ARIA 1.2 compl
 [![TypeScript](https://img.shields.io/badge/TypeScript-first-3178c6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![React 18+](https://img.shields.io/badge/React-18%2B-61dafb?logo=react&logoColor=white)](https://react.dev/)
 [![a11y](https://img.shields.io/badge/a11y-ARIA%201.2-6366f1)](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/)
-[![tree-shakable](https://img.shields.io/badge/tree--shakable-yes-43a047)]()
-[![CSS variables](https://img.shields.io/badge/theming-CSS%20variables-f59e0b)]()
+![tree-shakable](https://img.shields.io/badge/tree--shakable-yes-43a047)
+![CSS variables](https://img.shields.io/badge/theming-CSS%20variables-f59e0b)
 [![Live Demo](https://img.shields.io/badge/demo-live%20%E2%86%97-blue)](https://motiondesignlv.github.io/ReactZero-Combo/)
 
 ## Features
@@ -29,7 +29,10 @@ Headless, accessible React combo & select. **Zero dependencies.** ARIA 1.2 compl
 
 ## AI Reference
 
-Download the [AI reference file](./ai-reference.md) and feed it to your AI coding assistant for complete API docs, examples, and patterns.
+Feed the AI reference file to your AI coding assistant for complete API docs, examples, and patterns:
+
+- View on GitHub: [ai-reference.md](https://github.com/motiondesignlv/ReactZero-Combo/blob/main/ai-reference.md)
+- Direct fetch URL (for AI tools): `https://raw.githubusercontent.com/motiondesignlv/ReactZero-Combo/main/ai-reference.md`
 
 ## Installation
 
@@ -40,10 +43,10 @@ npm install @reactzero/combo
 ## Quick Start — Headless Hook
 
 ```tsx
-import { useCombo } from '@reactzero/combo/hook';
+import { useCombo } from "@reactzero/combo/hook";
 
 function MyCombo() {
-  const items = ['Apple', 'Banana', 'Cherry', 'Date'];
+  const items = ["Apple", "Banana", "Cherry", "Date"];
 
   const {
     isOpen,
@@ -66,20 +69,23 @@ function MyCombo() {
     <div>
       <label {...getLabelProps()}>Fruit</label>
       <div>
-        <input {...getInputProps({ placeholder: 'Search...' })} />
-        {hasSelection && <button {...getClearButtonProps()}>{icons.clear}</button>}
+        <input {...getInputProps({ placeholder: "Search..." })} />
+        {hasSelection && (
+          <button {...getClearButtonProps()}>{icons.clear}</button>
+        )}
         <button {...getToggleButtonProps()}>
           <span {...getChevronProps()}>{chevronIcon}</span>
         </button>
       </div>
-      <ul {...getMenuProps()} style={{ display: isOpen ? 'block' : 'none' }}>
+      <ul {...getMenuProps()} style={{ display: isOpen ? "block" : "none" }}>
         {isOpen &&
           filteredItems.map((item, index) => (
             <li
               key={index}
               {...getItemProps({ item, index })}
               style={{
-                background: highlightedIndex === index ? '#dbeafe' : 'transparent',
+                background:
+                  highlightedIndex === index ? "#dbeafe" : "transparent",
                 fontWeight: selectedItem === item ? 600 : 400,
               }}
             >
@@ -95,20 +101,18 @@ function MyCombo() {
 ## Quick Start — Pre-built Component
 
 ```tsx
-import { Combo } from '@reactzero/combo';
-import '@reactzero/combo/styles';
+import { Combo } from "@reactzero/combo";
+import "@reactzero/combo/styles";
 
 function App() {
   return (
     <Combo
-      items={['Apple', 'Banana', 'Cherry', 'Date']}
+      items={["Apple", "Banana", "Cherry", "Date"]}
       label="Favorite Fruit"
       placeholder="Search fruits..."
-      onSelectedItemChange={(item) => console.log('Selected:', item)}
+      onSelectedItemChange={(item) => console.log("Selected:", item)}
       renderItem={({ item, isHighlighted, isSelected }) => (
-        <div style={{ fontWeight: isSelected ? 600 : 400 }}>
-          {String(item)}
-        </div>
+        <div style={{ fontWeight: isSelected ? 600 : 400 }}>{String(item)}</div>
       )}
     />
   );
@@ -117,13 +121,13 @@ function App() {
 
 ## Import Paths
 
-| Path | Size | Description |
-|------|------|-------------|
-| `@reactzero/combo/hook` | 4.8 kB | Hook + types only |
-| `@reactzero/combo` | 6.7 kB | Hook + Combo + Portal + LiveRegion |
-| `@reactzero/combo/styles` | 2.5 kB | Base structural CSS |
-| `@reactzero/combo/themes/dark.css` | — | Dark theme tokens |
-| `@reactzero/combo/themes/high-contrast.css` | — | High-contrast theme tokens |
+| Path                                        | Size   | Description                        |
+| ------------------------------------------- | ------ | ---------------------------------- |
+| `@reactzero/combo/hook`                     | 4.8 kB | Hook + types only                  |
+| `@reactzero/combo`                          | 6.7 kB | Hook + Combo + Portal + LiveRegion |
+| `@reactzero/combo/styles`                   | 2.5 kB | Base structural CSS                |
+| `@reactzero/combo/themes/dark.css`          | —      | Dark theme tokens                  |
+| `@reactzero/combo/themes/high-contrast.css` | —      | High-contrast theme tokens         |
 
 ## Variants
 
@@ -131,7 +135,7 @@ function App() {
 
 ```tsx
 <Combo
-  items={['United States', 'Canada', 'Mexico']}
+  items={["United States", "Canada", "Mexico"]}
   variant="select"
   placeholder="Choose a country..."
 />
@@ -142,8 +146,8 @@ function App() {
 ```tsx
 <Combo
   groups={[
-    { label: 'Fruits', items: ['Apple', 'Banana'] },
-    { label: 'Vegetables', items: ['Carrot', 'Broccoli'] },
+    { label: "Fruits", items: ["Apple", "Banana"] },
+    { label: "Vegetables", items: ["Carrot", "Broccoli"] },
   ]}
   items={[]}
   placeholder="Search..."
@@ -155,7 +159,12 @@ function App() {
 ```tsx
 <Combo
   items={items}
-  renderTrigger={({ getInputProps, getToggleButtonProps, isOpen, chevronIcon }) => (
+  renderTrigger={({
+    getInputProps,
+    getToggleButtonProps,
+    isOpen,
+    chevronIcon,
+  }) => (
     <div className="my-trigger">
       <input {...getInputProps()} />
       <button {...getToggleButtonProps()}>{chevronIcon}</button>

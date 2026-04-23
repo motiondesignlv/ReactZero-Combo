@@ -119,11 +119,7 @@ export function useCombo<T>(
       : '';
 
   // Icons
-  const icons = useMemo(
-    () => resolveIcons(iconOverrides),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [iconOverrides],
-  );
+  const icons = useMemo(() => resolveIcons(iconOverrides), [iconOverrides]);
   const chevronIcon = useMemo(
     () => resolveChevron(chevronStyle, iconOverrides?.chevronDown),
     [chevronStyle, iconOverrides?.chevronDown],
@@ -172,28 +168,53 @@ export function useCombo<T>(
     }
   }, [isOpen, state.filteredItems.length]);
 
-  // Fire callbacks on state changes
+  // Fire callbacks on state changes.
+  //
+  // We deliberately depend on `state` only — re-running this effect for every
+  // new callback identity would cause spurious announcements and duplicate
+  // user-callback invocations on every parent render. Latest values are read
+  // through `callbacksRef`, which we update synchronously on each render.
+  const callbacksRef = useRef({
+    onSelectedItemChange,
+    onSelectedItemsChange,
+    onIsOpenChange,
+    onHighlightedIndexChange,
+    onStateChange,
+    onInputChange,
+    itemToString,
+  });
+  callbacksRef.current = {
+    onSelectedItemChange,
+    onSelectedItemsChange,
+    onIsOpenChange,
+    onHighlightedIndexChange,
+    onStateChange,
+    onInputChange,
+    itemToString,
+  };
+
   const prevStateRef = useRef(state);
   useEffect(() => {
     const prev = prevStateRef.current;
     prevStateRef.current = state;
+    const cb = callbacksRef.current;
 
     if (prev.selectedItem !== state.selectedItem) {
-      onSelectedItemChange?.(state.selectedItem);
+      cb.onSelectedItemChange?.(state.selectedItem);
       if (state.selectedItem) {
-        announce(`${itemToString(state.selectedItem)} selected`);
+        announce(`${cb.itemToString(state.selectedItem)} selected`);
       } else if (prev.selectedItem) {
-        announce(`${itemToString(prev.selectedItem)} deselected`);
+        announce(`${cb.itemToString(prev.selectedItem)} deselected`);
       }
     }
 
     if (prev.selectedItems !== state.selectedItems) {
-      onSelectedItemsChange?.(state.selectedItems);
+      cb.onSelectedItemsChange?.(state.selectedItems);
       // Announce additions and removals in multi-select
       if (state.selectedItems.length > prev.selectedItems.length) {
         const added = state.selectedItems[state.selectedItems.length - 1];
         if (added) {
-          announce(`${itemToString(added)} selected, ${state.selectedItems.length} total`);
+          announce(`${cb.itemToString(added)} selected, ${state.selectedItems.length} total`);
         }
       } else if (state.selectedItems.length < prev.selectedItems.length) {
         announce(`Item removed, ${state.selectedItems.length} selected`);
@@ -202,26 +223,27 @@ export function useCombo<T>(
 
     const wasOpen =
       prev.status === 'OPEN_IDLE' || prev.status === 'OPEN_HIGHLIGHTED';
-    if (wasOpen !== isOpen) {
-      onIsOpenChange?.(isOpen);
+    const nowOpen =
+      state.status === 'OPEN_IDLE' || state.status === 'OPEN_HIGHLIGHTED';
+    if (wasOpen !== nowOpen) {
+      cb.onIsOpenChange?.(nowOpen);
     }
 
     if (prev.highlightedIndex !== state.highlightedIndex) {
-      onHighlightedIndexChange?.(state.highlightedIndex);
+      cb.onHighlightedIndexChange?.(state.highlightedIndex);
     }
 
     if (prev.inputValue !== state.inputValue) {
-      onInputChange?.(state.inputValue);
+      cb.onInputChange?.(state.inputValue);
     }
 
-    onStateChange?.(state);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    cb.onStateChange?.(state);
   }, [state]);
 
   // ---- PROP GETTERS ----
 
   const getLabelProps = useCallback(
-    (userProps: Record<string, unknown> = {}) => ({
+    (userProps: React.LabelHTMLAttributes<HTMLLabelElement> = {}) => ({
       id: ids.label,
       htmlFor: ids.input,
       ...userProps,
@@ -230,7 +252,11 @@ export function useCombo<T>(
   );
 
   const getInputProps = useCallback(
-    (userProps: Record<string, unknown> = {}) => ({
+    (
+      userProps: React.InputHTMLAttributes<HTMLInputElement> & {
+        ref?: React.Ref<HTMLInputElement>;
+      } = {},
+    ) => ({
       id: ids.input,
       role: 'combobox' as const,
       'aria-expanded': isOpen,
@@ -251,40 +277,28 @@ export function useCombo<T>(
       autoComplete: 'off',
       value: state.inputValue,
       ...userProps,
-      onChange: callAll(
-        userProps.onChange as (() => void) | undefined,
-        (e: React.ChangeEvent<HTMLInputElement>) => {
-          if (disabled || readOnly) return;
-          dispatch({ type: 'INPUT_CHANGE', value: e.target.value });
-        },
-      ),
-      onKeyDown: callAll(
-        userProps.onKeyDown as (() => void) | undefined,
-        handleKeyDown,
-      ),
-      onFocus: callAll(
-        userProps.onFocus as (() => void) | undefined,
-        () => {
-          if (disabled) return;
-          dispatch({ type: 'FOCUS' });
-        },
-      ),
-      onBlur: callAll(
-        userProps.onBlur as (() => void) | undefined,
-        () => {
-          dispatch({ type: 'BLUR' });
-        },
-      ),
-      onClick: callAll(
-        userProps.onClick as (() => void) | undefined,
-        () => {
-          if (disabled || readOnly) return;
-          if (!isOpen) dispatch({ type: 'OPEN_MENU' });
-        },
-      ),
+      onChange: callAll(userProps.onChange, (e) => {
+        if (disabled || readOnly) return;
+        dispatch({ type: 'INPUT_CHANGE', value: e.target.value });
+      }),
+      onKeyDown: callAll(userProps.onKeyDown, handleKeyDown),
+      onFocus: callAll(userProps.onFocus, () => {
+        if (disabled) return;
+        dispatch({ type: 'FOCUS' });
+      }),
+      onBlur: callAll(userProps.onBlur, () => {
+        dispatch({ type: 'BLUR' });
+      }),
+      onClick: callAll(userProps.onClick, () => {
+        if (disabled || readOnly) return;
+        if (!isOpen) dispatch({ type: 'OPEN_MENU' });
+      }),
       ref: mergeRefs(
         inputRef,
-        userProps.ref as React.RefObject<HTMLInputElement | null> | undefined,
+        userProps.ref as
+          | React.RefObject<HTMLInputElement | null>
+          | ((instance: HTMLInputElement | null) => void)
+          | undefined,
       ),
     }),
     [
@@ -302,7 +316,7 @@ export function useCombo<T>(
   );
 
   const getToggleButtonProps = useCallback(
-    (userProps: Record<string, unknown> = {}) => ({
+    (userProps: React.ButtonHTMLAttributes<HTMLButtonElement> = {}) => ({
       id: ids.toggleButton,
       type: 'button' as const,
       'aria-label': isOpen ? 'Close options' : 'Open options',
@@ -312,60 +326,52 @@ export function useCombo<T>(
       tabIndex: -1,
       'aria-disabled': disabled ? true : undefined,
       ...userProps,
-      onMouseDown: callAll(
-        userProps.onMouseDown as (() => void) | undefined,
-        (e: React.MouseEvent) => e.preventDefault(), // prevent input blur
-      ),
-      onClick: callAll(
-        userProps.onClick as (() => void) | undefined,
-        () => {
-          if (disabled || readOnly) return;
-          dispatch({ type: 'TOGGLE_MENU' });
-          inputRef.current?.focus();
-        },
-      ),
+      onMouseDown: callAll(userProps.onMouseDown, (e) => e.preventDefault()), // prevent input blur
+      onClick: callAll(userProps.onClick, () => {
+        if (disabled || readOnly) return;
+        dispatch({ type: 'TOGGLE_MENU' });
+        inputRef.current?.focus();
+      }),
     }),
     [ids, isOpen, disabled, readOnly],
   );
 
   const getClearButtonProps = useCallback(
-    (userProps: Record<string, unknown> = {}) => ({
+    (userProps: React.ButtonHTMLAttributes<HTMLButtonElement> = {}) => ({
       id: ids.clearButton,
       type: 'button' as const,
       'aria-label': 'Clear selection',
       tabIndex: -1,
       ...userProps,
-      onMouseDown: callAll(
-        userProps.onMouseDown as (() => void) | undefined,
-        (e: React.MouseEvent) => e.preventDefault(), // prevent input blur
-      ),
-      onClick: callAll(
-        userProps.onClick as (() => void) | undefined,
-        () => {
-          if (disabled || readOnly) return;
-          dispatch({ type: 'CLEAR_SELECTION' });
-          inputRef.current?.focus();
-        },
-      ),
+      onMouseDown: callAll(userProps.onMouseDown, (e) => e.preventDefault()), // prevent input blur
+      onClick: callAll(userProps.onClick, () => {
+        if (disabled || readOnly) return;
+        dispatch({ type: 'CLEAR_SELECTION' });
+        inputRef.current?.focus();
+      }),
     }),
     [ids, disabled, readOnly],
   );
 
   const getMenuProps = useCallback(
-    (userProps: Record<string, unknown> = {}) => ({
+    (
+      userProps: React.HTMLAttributes<HTMLElement> & {
+        ref?: React.Ref<HTMLElement>;
+      } = {},
+    ) => ({
       id: ids.listbox,
       role: 'listbox' as const,
       'aria-labelledby': ariaLabelledBy ?? ids.label,
       'aria-label': ariaLabel,
       'aria-multiselectable': mode === 'multi' ? true : undefined,
       ...userProps,
-      onMouseDown: callAll(
-        userProps.onMouseDown as (() => void) | undefined,
-        (e: React.MouseEvent) => e.preventDefault(), // prevent input blur
-      ),
+      onMouseDown: callAll(userProps.onMouseDown, (e) => e.preventDefault()), // prevent input blur
       ref: mergeRefs(
         listboxRef,
-        userProps.ref as React.RefObject<HTMLElement | null> | undefined,
+        userProps.ref as
+          | React.RefObject<HTMLElement | null>
+          | ((instance: HTMLElement | null) => void)
+          | undefined,
       ),
     }),
     [ids, ariaLabel, ariaLabelledBy, mode],
@@ -377,10 +383,11 @@ export function useCombo<T>(
       index,
       variant: itemVariant,
       ...userProps
-    }: { item: T; index: number; variant?: string } & Record<
-      string,
-      unknown
-    >) => {
+    }: {
+      item: T;
+      index: number;
+      variant?: string;
+    } & React.LiHTMLAttributes<HTMLLIElement>) => {
       const isSelected = mode === 'multi'
         ? state.selectedItems.some((si) => itemToValue(si) === itemToValue(item))
         : state.selectedItem != null &&
@@ -402,26 +409,17 @@ export function useCombo<T>(
         'data-disabled': itemIsDisabled || undefined,
         'data-variant': itemVariant || undefined,
         ...userProps,
-        onClick: callAll(
-          userProps?.onClick as (() => void) | undefined,
-          () => {
-            if (itemIsDisabled) return;
-            dispatch({ type: 'SELECT_ITEM', item });
-          },
-        ),
-        onMouseEnter: callAll(
-          userProps?.onMouseEnter as (() => void) | undefined,
-          () => {
-            if (itemIsDisabled && disabledItemBehavior === 'skip') return;
-            dispatch({ type: 'HIGHLIGHT_ITEM', index });
-          },
-        ),
-        onMouseLeave: callAll(
-          userProps?.onMouseLeave as (() => void) | undefined,
-          () => {
-            dispatch({ type: 'HIGHLIGHT_ITEM', index: -1 });
-          },
-        ),
+        onClick: callAll(userProps.onClick, () => {
+          if (itemIsDisabled) return;
+          dispatch({ type: 'SELECT_ITEM', item });
+        }),
+        onMouseEnter: callAll(userProps.onMouseEnter, () => {
+          if (itemIsDisabled && disabledItemBehavior === 'skip') return;
+          dispatch({ type: 'HIGHLIGHT_ITEM', index });
+        }),
+        onMouseLeave: callAll(userProps.onMouseLeave, () => {
+          dispatch({ type: 'HIGHLIGHT_ITEM', index: -1 });
+        }),
       };
     },
     [
@@ -444,7 +442,7 @@ export function useCombo<T>(
     }: {
       group: ComboGroup<T>;
       index: number;
-    } & Record<string, unknown>) => ({
+    } & React.HTMLAttributes<HTMLElement>) => ({
       role: 'group' as const,
       'aria-label': group.label,
       id: ids.group(index),
@@ -455,7 +453,7 @@ export function useCombo<T>(
   );
 
   const getChevronProps = useCallback(
-    (userProps: Record<string, unknown> = {}) => ({
+    (userProps: React.HTMLAttributes<HTMLElement> = {}) => ({
       'data-rzero-chevron': '',
       'aria-hidden': true as const,
       ...userProps,
@@ -464,7 +462,11 @@ export function useCombo<T>(
   );
 
   const getTriggerProps = useCallback(
-    (userProps: Record<string, unknown> = {}) => ({
+    (
+      userProps: React.HTMLAttributes<HTMLElement> & {
+        ref?: React.Ref<HTMLElement>;
+      } = {},
+    ) => ({
       role: 'combobox' as const,
       'aria-expanded': isOpen,
       'aria-haspopup': 'listbox' as const,
@@ -482,33 +484,24 @@ export function useCombo<T>(
       'data-loading': disabled === 'loading' || undefined,
       tabIndex: 0,
       ...userProps,
-      onKeyDown: callAll(
-        userProps.onKeyDown as (() => void) | undefined,
-        handleKeyDown,
-      ),
-      onClick: callAll(
-        userProps.onClick as (() => void) | undefined,
-        () => {
-          if (disabled || readOnly) return;
-          dispatch({ type: 'TOGGLE_MENU' });
-        },
-      ),
-      onFocus: callAll(
-        userProps.onFocus as (() => void) | undefined,
-        () => {
-          if (disabled) return;
-          dispatch({ type: 'FOCUS' });
-        },
-      ),
-      onBlur: callAll(
-        userProps.onBlur as (() => void) | undefined,
-        () => {
-          dispatch({ type: 'BLUR' });
-        },
-      ),
+      onKeyDown: callAll(userProps.onKeyDown, handleKeyDown),
+      onClick: callAll(userProps.onClick, () => {
+        if (disabled || readOnly) return;
+        dispatch({ type: 'TOGGLE_MENU' });
+      }),
+      onFocus: callAll(userProps.onFocus, () => {
+        if (disabled) return;
+        dispatch({ type: 'FOCUS' });
+      }),
+      onBlur: callAll(userProps.onBlur, () => {
+        dispatch({ type: 'BLUR' });
+      }),
       ref: mergeRefs(
         triggerRef,
-        userProps.ref as React.RefObject<HTMLElement | null> | undefined,
+        userProps.ref as
+          | React.RefObject<HTMLElement | null>
+          | ((instance: HTMLElement | null) => void)
+          | undefined,
       ),
     }),
     [

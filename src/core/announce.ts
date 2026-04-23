@@ -27,8 +27,14 @@ function ensureRegion(): HTMLElement | null {
 }
 
 /**
- * Announce a message to screen readers via a live region.
- * Clear-then-set pattern forces screen readers to re-read.
+ * Announce a message to screen readers via a shared, document-level live region.
+ *
+ * This is the imperative path used internally by `useCombo` (it doesn't own a
+ * DOM tree, so a singleton works best). For declarative usage from your own
+ * components, prefer the `<LiveRegion message={...} />` component, which scopes
+ * the live region to your subtree and cleans up on unmount.
+ *
+ * Clear-then-set pattern forces screen readers to re-read repeated messages.
  */
 export function announce(message: string, clearAfterMs = 3000): void {
   const region = ensureRegion();

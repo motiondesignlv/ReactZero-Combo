@@ -116,10 +116,91 @@ export function getLastEnabledIndex<T>(
   return -1;
 }
 
+/**
+ * Apply a selection to state, branching on single vs multi mode and honoring
+ * `deselectionAllowed`, `maxSelected`, and `closeOnSelect`. Shared by
+ * SELECT_HIGHLIGHTED and SELECT_ITEM so behavior can't drift between them
+ * (notably around the maxSelected guard, which used to live in two places).
+ */
+function applySelection<T>(
+  state: ComboState<T>,
+  item: T,
+  ctx: ReducerContext<T>,
+): ComboState<T> {
+  if (ctx.isItemDisabled(item)) return state;
+
+  const closedStatus: ComboStatus = ctx.closeOnSelect
+    ? 'FOCUSED_CLOSED'
+    : state.status;
+  const closedHighlight = ctx.closeOnSelect ? -1 : state.highlightedIndex;
+
+  if (ctx.mode === 'multi') {
+    const itemVal = ctx.itemToValue(item);
+    const alreadySelected = state.selectedItems.some(
+      (si) => ctx.itemToValue(si) === itemVal,
+    );
+
+    // Block adding beyond maxSelected (deselection always allowed)
+    if (
+      !alreadySelected &&
+      ctx.maxSelected != null &&
+      state.selectedItems.length >= ctx.maxSelected
+    ) {
+      return state;
+    }
+
+    const nextSelectedItems = alreadySelected
+      ? state.selectedItems.filter((si) => ctx.itemToValue(si) !== itemVal)
+      : [...state.selectedItems, item];
+
+    return {
+      ...state,
+      status: closedStatus,
+      selectedItems: nextSelectedItems,
+      highlightedIndex: closedHighlight,
+    };
+  }
+
+  // Single-mode deselection: clicking the already-selected item clears it
+  if (
+    ctx.deselectionAllowed &&
+    state.selectedItem != null &&
+    ctx.itemToValue(state.selectedItem) === ctx.itemToValue(item)
+  ) {
+    return {
+      ...state,
+      status: closedStatus,
+      selectedItem: null,
+      inputValue: '',
+      lastConfirmedValue: '',
+      highlightedIndex: closedHighlight,
+    };
+  }
+
+  const label = ctx.itemToString(item);
+  return {
+    ...state,
+    status: closedStatus,
+    selectedItem: item,
+    inputValue: label,
+    lastConfirmedValue: label,
+    highlightedIndex: closedHighlight,
+  };
+}
+
 // ---------------------------------------------------------------------------
 // Initial state
 // ---------------------------------------------------------------------------
 
+/**
+ * Build the initial reducer state from hook options.
+ *
+ * Note: `inputValue` and `lastConfirmedValue` are derived from the same
+ * source (the resolved selectedItem's label, or empty). `lastConfirmedValue`
+ * is what BLUR reverts to — keep them seeded together so the input doesn't
+ * "snap" to a different string the first time the user unfocuses without
+ * editing. If you ever decouple these, also revisit BLUR's revert path.
+ */
 export function getInitialState<T>(
   options: UseComboOptions<T>,
 ): ComboState<T> {
@@ -359,123 +440,11 @@ export function comboReducer<T>(
     case 'SELECT_HIGHLIGHTED': {
       if (state.highlightedIndex < 0) return state;
       if (state.highlightedIndex >= state.filteredItems.length) return state;
-
-      const item = state.filteredItems[state.highlightedIndex];
-      if (ctx.isItemDisabled(item)) return state;
-
-      // Multi mode: toggle item in/out of selectedItems
-      if (ctx.mode === 'multi') {
-        const itemVal = ctx.itemToValue(item);
-        const alreadySelected = state.selectedItems.some(
-          (si) => ctx.itemToValue(si) === itemVal,
-        );
-
-        // Block adding beyond maxSelected (deselection always allowed)
-        if (
-          !alreadySelected &&
-          ctx.maxSelected != null &&
-          state.selectedItems.length >= ctx.maxSelected
-        ) {
-          return state;
-        }
-
-        const nextSelectedItems = alreadySelected
-          ? state.selectedItems.filter((si) => ctx.itemToValue(si) !== itemVal)
-          : [...state.selectedItems, item];
-
-        return {
-          ...state,
-          status: ctx.closeOnSelect ? 'FOCUSED_CLOSED' : state.status,
-          selectedItems: nextSelectedItems,
-          highlightedIndex: ctx.closeOnSelect ? -1 : state.highlightedIndex,
-        };
-      }
-
-      // Deselection check
-      if (ctx.deselectionAllowed && state.selectedItem != null) {
-        const currentVal = ctx.itemToValue(state.selectedItem);
-        const newVal = ctx.itemToValue(item);
-        if (currentVal === newVal) {
-          // Deselect
-          return {
-            ...state,
-            status: ctx.closeOnSelect ? 'FOCUSED_CLOSED' : state.status,
-            selectedItem: null,
-            inputValue: '',
-            lastConfirmedValue: '',
-            highlightedIndex: ctx.closeOnSelect ? -1 : state.highlightedIndex,
-          };
-        }
-      }
-
-      const label = ctx.itemToString(item);
-      return {
-        ...state,
-        status: ctx.closeOnSelect ? 'FOCUSED_CLOSED' : state.status,
-        selectedItem: item,
-        inputValue: label,
-        lastConfirmedValue: label,
-        highlightedIndex: ctx.closeOnSelect ? -1 : state.highlightedIndex,
-      };
+      return applySelection(state, state.filteredItems[state.highlightedIndex], ctx);
     }
 
     case 'SELECT_ITEM': {
-      const item = action.item;
-      if (ctx.isItemDisabled(item)) return state;
-
-      // Multi mode: toggle item in/out of selectedItems
-      if (ctx.mode === 'multi') {
-        const itemVal = ctx.itemToValue(item);
-        const alreadySelected = state.selectedItems.some(
-          (si) => ctx.itemToValue(si) === itemVal,
-        );
-
-        // Block adding beyond maxSelected (deselection always allowed)
-        if (
-          !alreadySelected &&
-          ctx.maxSelected != null &&
-          state.selectedItems.length >= ctx.maxSelected
-        ) {
-          return state;
-        }
-
-        const nextSelectedItems = alreadySelected
-          ? state.selectedItems.filter((si) => ctx.itemToValue(si) !== itemVal)
-          : [...state.selectedItems, item];
-
-        return {
-          ...state,
-          status: ctx.closeOnSelect ? 'FOCUSED_CLOSED' : state.status,
-          selectedItems: nextSelectedItems,
-          highlightedIndex: ctx.closeOnSelect ? -1 : state.highlightedIndex,
-        };
-      }
-
-      // Deselection check
-      if (ctx.deselectionAllowed && state.selectedItem != null) {
-        const currentVal = ctx.itemToValue(state.selectedItem);
-        const newVal = ctx.itemToValue(item);
-        if (currentVal === newVal) {
-          return {
-            ...state,
-            status: ctx.closeOnSelect ? 'FOCUSED_CLOSED' : state.status,
-            selectedItem: null,
-            inputValue: '',
-            lastConfirmedValue: '',
-            highlightedIndex: ctx.closeOnSelect ? -1 : state.highlightedIndex,
-          };
-        }
-      }
-
-      const label = ctx.itemToString(item);
-      return {
-        ...state,
-        status: ctx.closeOnSelect ? 'FOCUSED_CLOSED' : state.status,
-        selectedItem: item,
-        inputValue: label,
-        lastConfirmedValue: label,
-        highlightedIndex: ctx.closeOnSelect ? -1 : state.highlightedIndex,
-      };
+      return applySelection(state, action.item, ctx);
     }
 
     case 'DESELECT_ITEM': {
